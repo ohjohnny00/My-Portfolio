@@ -3,6 +3,7 @@
 interface Project {
   title: string;
   image: string;
+  alt: string;
   link: string;
   preview: string;
   status: string;
@@ -13,13 +14,15 @@ const projects: Project[] = [
   {
     title: "RepReady",
     image: "projects/830611764_1461873516085298_6993568021081799379_n.png",
+    alt: "RepReady Project",
     link: "https://github.com",
     preview: "#!",
     status: "On Development",
   },
   {
     title: "Enterprise Resource Planning",
-    image: "projects/watermarked_img_51936980256846575.jpg",
+    image: "/ERP.jpg",
+    alt: "ERP Project",
     link: "https://portforlio-1cqq.onrender.com/hrms/login",
     preview: "#!",
     status: "Deployed",
@@ -49,7 +52,7 @@ const projects: Project[] = [
               <div class="rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 mb-4">
                 <img
                   src={project.image}
-                  alt={project.title}
+                  alt={project.alt}
                   class="w-full h-48 md:h-72 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
