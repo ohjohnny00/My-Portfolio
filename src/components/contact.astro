@@ -9,29 +9,162 @@
         <p class="mb-4">
           Have a question or a project in mind? Feel free to reach out.
         </p>
-        <div class="flex items-center gap-2">
-          <span>Location:</span>
-          <span class="text-[var(--white)]">Your country</span>
+
+        <div class="w-full max-w-xs">
+          <label class="mb-2 block text-sm text-[var(--white-icon)]">
+            Location
+          </label>
+
+          <div id="country-selector" class="relative">
+            <button
+              id="country-trigger"
+              type="button"
+              class="flex w-full items-center justify-between rounded-lg border border-[var(--white-icon-tr)] bg-[#1414149c] px-3 py-2.5 text-left text-[var(--white)] shadow-sm transition-colors hover:border-[var(--sec)] focus:outline-none focus:ring-2 focus:ring-[var(--sec)]"
+              aria-haspopup="listbox"
+              aria-expanded="false"
+            >
+              <span id="selected-country" class="truncate">Select country</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                class="size-4 shrink-0 text-[var(--white-icon)]"
+                aria-hidden="true"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5.22 7.22a.75.75 0 0 1 1.06 0L10 10.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 8.28a.75.75 0 0 1 0-1.06Z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+
+            <div
+              id="country-menu"
+              class="absolute z-20 mt-2 hidden w-full overflow-hidden rounded-lg border border-[var(--white-icon-tr)] bg-[#121212] shadow-2xl shadow-black/30"
+              role="listbox"
+              aria-label="Countries"
+            >
+              <div class="border-b border-[var(--white-icon-tr)] bg-[#1a1a1a] p-2">
+                <input
+                  id="country-search"
+                  type="search"
+                  placeholder="Search country"
+                  class="w-full rounded-md border border-[var(--white-icon-tr)] bg-[#0f0f0f] px-2.5 py-2 text-sm text-[var(--white)] placeholder:text-[var(--white-icon)] focus:border-[var(--sec)] focus:outline-none focus:ring-2 focus:ring-[var(--sec)]"
+                />
+              </div>
+
+              <div id="country-options" class="max-h-52 overflow-y-auto bg-[#121212]">
+                <button
+                  type="button"
+                  class="country-option flex w-full items-center justify-between px-3 py-2 text-left text-sm text-[var(--white)] transition hover:bg-[#1d1d1d]"
+                  data-country="Spain"
+                >
+                  <span>Spain</span>
+                  <span class="text-[var(--white-icon)]">EU</span>
+                </button>
+                <button
+                  type="button"
+                  class="country-option flex w-full items-center justify-between px-3 py-2 text-left text-sm text-[var(--white)] transition hover:bg-[#1d1d1d]"
+                  data-country="United States"
+                >
+                  <span>United States</span>
+                  <span class="text-[var(--white-icon)]">NA</span>
+                </button>
+                <button
+                  type="button"
+                  class="country-option flex w-full items-center justify-between px-3 py-2 text-left text-sm text-[var(--white)] transition hover:bg-[#1d1d1d]"
+                  data-country="Canada"
+                >
+                  <span>Canada</span>
+                  <span class="text-[var(--white-icon)]">NA</span>
+                </button>
+                <button
+                  type="button"
+                  class="country-option flex w-full items-center justify-between px-3 py-2 text-left text-sm text-[var(--white)] transition hover:bg-[#1d1d1d]"
+                  data-country="United Kingdom"
+                >
+                  <span>United Kingdom</span>
+                  <span class="text-[var(--white-icon)]">EU</span>
+                </button>
+                <button
+                  type="button"
+                  class="country-option flex w-full items-center justify-between px-3 py-2 text-left text-sm text-[var(--white)] transition hover:bg-[#1d1d1d]"
+                  data-country="Germany"
+                >
+                  <span>Germany</span>
+                  <span class="text-[var(--white-icon)]">EU</span>
+                </button>
+                <button
+                  type="button"
+                  class="country-option flex w-full items-center justify-between px-3 py-2 text-left text-sm text-[var(--white)] transition hover:bg-[#1d1d1d]"
+                  data-country="France"
+                >
+                  <span>France</span>
+                  <span class="text-[var(--white-icon)]">EU</span>
+                </button>
+                <button
+                  type="button"
+                  class="country-option flex w-full items-center justify-between px-3 py-2 text-left text-sm text-[var(--white)] transition hover:bg-[#1d1d1d]"
+                  data-country="Australia"
+                >
+                  <span>Australia</span>
+                  <span class="text-[var(--white-icon)]">OC</span>
+                </button>
+                <button
+                  type="button"
+                  class="country-option flex w-full items-center justify-between px-3 py-2 text-left text-sm text-[var(--white)] transition hover:bg-[#1d1d1d]"
+                  data-country="Brazil"
+                >
+                  <span>Brazil</span>
+                  <span class="text-[var(--white-icon)]">SA</span>
+                </button>
+                <button
+                  type="button"
+                  class="country-option flex w-full items-center justify-between px-3 py-2 text-left text-sm text-[var(--white)] transition hover:bg-[#1d1d1d]"
+                  data-country="Japan"
+                >
+                  <span>Japan</span>
+                  <span class="text-[var(--white-icon)]">AS</span>
+                </button>
+                <button
+                  type="button"
+                  class="country-option flex w-full items-center justify-between px-3 py-2 text-left text-sm text-[var(--white)] transition hover:bg-[#1d1d1d]"
+                  data-country="Philippines"
+                >
+                  <span>Philippines</span>
+                  <span class="text-[var(--white-icon)]">AS</span>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
       <div>
         <form
           id="contact-form"
-          action="https://formspree.io/f/YOUR_FORM_ID_HERE"
+          action="https://formsubmit.co/ajax/rubenilagan32@gmail.com"
           method="POST"
           class="flex flex-col gap-4"
         >
+          <input type="hidden" id="location-input" name="location" value="" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input
+            type="hidden"
+            name="_subject"
+            value="New portfolio contact message"
+          />
           <input
             type="text"
-            name="from_name"
+            name="name"
             placeholder="Name"
             required
             class="px-4 py-2 bg-[#1414149c] text-[var(--white)] border border-[var(--white-icon-tr)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--sec)]"
           />
           <input
             type="email"
-            name="reply_to"
+            name="email"
             placeholder="Email"
             required
             class="px-4 py-2 bg-[#1414149c] text-[var(--white)] border border-[var(--white-icon-tr)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--sec)]"
@@ -64,29 +197,97 @@
 <script type="module" is:inline>
   const form = document.getElementById("contact-form");
   const formMessage = document.getElementById("form-message");
+  const countrySelector = document.getElementById("country-selector");
+  const countryTrigger = document.getElementById("country-trigger");
+  const countryMenu = document.getElementById("country-menu");
+  const countrySearch = document.getElementById("country-search");
+  const selectedCountry = document.getElementById("selected-country");
+  const locationInput = document.getElementById("location-input");
+  const countryOptions = Array.from(document.querySelectorAll(".country-option"));
+
+  const setCountry = (country) => {
+    selectedCountry.textContent = country;
+    locationInput.value = country;
+    countryMenu.classList.add("hidden");
+    countryTrigger.setAttribute("aria-expanded", "false");
+    countrySearch.value = "";
+    countryOptions.forEach((option) => {
+      const matches = option.dataset.country
+        .toLowerCase()
+        .includes(countrySearch.value.toLowerCase());
+      option.style.display = matches ? "flex" : "none";
+    });
+  };
+
+  const toggleMenu = () => {
+    const isHidden = countryMenu.classList.contains("hidden");
+    countryMenu.classList.toggle("hidden");
+    countryTrigger.setAttribute("aria-expanded", String(isHidden));
+    if (isHidden) {
+      countrySearch.focus();
+    }
+  };
+
+  countryTrigger.addEventListener("click", (event) => {
+    event.stopPropagation();
+    toggleMenu();
+  });
+
+  countryOptions.forEach((option) => {
+    option.addEventListener("click", () => {
+      setCountry(option.dataset.country);
+    });
+  });
+
+  countrySearch.addEventListener("input", (event) => {
+    const query = event.target.value.toLowerCase();
+    countryOptions.forEach((option) => {
+      const country = option.dataset.country.toLowerCase();
+      option.style.display = country.includes(query) ? "flex" : "none";
+    });
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!countrySelector.contains(event.target)) {
+      countryMenu.classList.add("hidden");
+      countryTrigger.setAttribute("aria-expanded", "false");
+    }
+  });
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const formData = new FormData(form);
+
+    const submitButton = form.querySelector('button[type="submit"]');
+    const originalText = submitButton.textContent;
+    submitButton.disabled = true;
+    submitButton.textContent = "Sending...";
 
     try {
       const response = await fetch(form.action, {
         method: "POST",
-        body: formData,
-        headers: { Accept: "application/json" },
+        body: new FormData(form),
+        headers: {
+          Accept: "application/json",
+        },
       });
+
       if (response.ok) {
         form.reset();
+        selectedCountry.textContent = "Select country";
+        locationInput.value = "";
         form.style.display = "none";
         formMessage.classList.remove("hidden");
       } else {
-        const data = await response.json();
+        const data = await response.json().catch(() => ({}));
         console.error("Error response:", data);
-        alert("There was a problem sending your message.");
+        alert("There was a problem sending your message. Please try again.");
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("There was a problem sending your message.");
+      alert("There was a problem sending your message. Please try again.");
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = originalText;
     }
   });
 </script>
