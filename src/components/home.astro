@@ -14,7 +14,7 @@ import SkillsList from "../React/SkillsList.tsx";
         class="flex flex-col lg:flex-row lg:items-center space-y-4 lg:space-y-0 lg:space-x-8 md:gap-4"
       >
         <h1
-          class="text-[var(--white)] text-5xl md:text-6xl font-medium text-pretty leading-none"
+          class="hero-signal text-[var(--white)] text-5xl md:text-6xl font-medium text-pretty leading-none"
         >
           B.S.I.T. <br />
         </h1>
@@ -116,6 +116,33 @@ import SkillsList from "../React/SkillsList.tsx";
     30%,
     70% {
       background-position: 0% 50%;
+    }
+  }
+</style>
+
+<style>
+  .hero-signal {
+    color: transparent;
+    background: linear-gradient(105deg, #bfc3c8 0%, #f4f5f6 39%, #8e949a 46%, #17191c 49%, #ffffff 51%, #555a60 54%, #d7dadd 62%, #bfc3c8 100%);
+    background-size: 260% 100%;
+    background-position: 100% 50%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: hero-signal-sweep 5s ease-in-out infinite alternate;
+  }
+
+  @keyframes hero-signal-sweep {
+    0%, 18% { background-position: 100% 50%; }
+    82%, 100% { background-position: 0% 50%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-signal {
+      animation: none;
+      color: var(--white);
+      background: none;
+      -webkit-text-fill-color: currentColor;
     }
   }
 </style>
