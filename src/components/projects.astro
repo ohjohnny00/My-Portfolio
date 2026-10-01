@@ -3,6 +3,7 @@
 interface Project {
   title: string;
   image: string;
+  gallery?: string[];
   link: string;
   preview: string;
   status: string;
@@ -19,7 +20,8 @@ const projects: Project[] = [
   },
   {
     title: "Enterprise Resource Planning",
-    image: "/ERP.jpg",
+    image: "projects/HRMS.png",
+    gallery: ["projects/HRMS.png", "projects/FMS.png", "projects/POS.png"],
     link: "https://portforlio-1cqq.onrender.com/hrms/login",
     preview: "#!",
     status: "Deployed",
@@ -39,20 +41,37 @@ const projects: Project[] = [
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       {
         projects.map((project) => (
-          <div class="group">
-            <a
-              href={project.preview}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="block"
-            >
-              <div class="rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 mb-4">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  class="w-full h-48 md:h-72 object-cover group-hover:scale-105 transition-transform duration-300"
-                />
+          <div class="group project-card">
+            {project.gallery ? (
+              <div class="erp-stack-stage mb-4">
+                {project.gallery.map((image, index) => (
+                  <button
+                    type="button"
+                    class={`erp-stack-image erp-stack-image-${index}`}
+                    data-lightbox-src={image}
+                    data-lightbox-alt={`${project.title} screenshot ${index + 1}`}
+                    aria-label={`View ${project.title} screenshot ${index + 1}`}
+                  >
+                    <img src={image} alt="" loading="lazy" />
+                  </button>
+                ))}
               </div>
+            ) : (
+              <a
+                href={project.preview}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="block mb-4"
+              >
+                <div class="rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    class="w-full h-48 md:h-72 object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+              </a>
+            )}
               <div class="flex items-center px-3">
                 <div class="flex-grow">
                   <h4 class="text-2xl font-semibold">{project.title}</h4>
@@ -93,11 +112,13 @@ const projects: Project[] = [
                   </a>
                 </div>
               </div>
-            </a>
           </div>
         ))
       }
     </div>
+    <dialog class="erp-lightbox" aria-label="Project screenshot">
+      <img class="erp-lightbox-image" alt="" />
+    </dialog>
     <a
       target="_blank"
       href="https://github.com/ohjohnny00"
@@ -118,3 +139,200 @@ const projects: Project[] = [
     </a>
   </div>
 </section>
+
+<script>
+  const lightbox = document.querySelector<HTMLDialogElement>(".erp-lightbox");
+  const lightboxImage = lightbox?.querySelector<HTMLImageElement>("img");
+  let previousDocumentOverflow = "";
+  let previousBodyOverflow = "";
+
+  document.querySelectorAll<HTMLButtonElement>("[data-lightbox-src]").forEach((button) => {
+    button.addEventListener("click", () => {
+      if (!lightbox || !lightboxImage) return;
+      lightboxImage.src = button.dataset.lightboxSrc ?? "";
+      lightboxImage.alt = button.dataset.lightboxAlt ?? "Project screenshot";
+      previousDocumentOverflow = document.documentElement.style.overflow;
+      previousBodyOverflow = document.body.style.overflow;
+      lightbox.showModal();
+      document.documentElement.style.overflow = "hidden";
+      document.body.style.overflow = "hidden";
+    });
+  });
+
+  lightbox?.addEventListener("click", (event) => {
+    if (event.target === lightbox) lightbox.close();
+  });
+
+  lightbox?.addEventListener("close", () => {
+    document.documentElement.style.overflow = previousDocumentOverflow;
+    document.body.style.overflow = previousBodyOverflow;
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && lightbox?.open) lightbox.close();
+  });
+</script>
+
+<style>
+  .erp-stack-stage {
+    position: relative;
+    width: min(100%, 400px);
+    margin-inline: auto;
+    height: auto;
+    aspect-ratio: 1.4 / 1;
+    perspective: 1100px;
+    isolation: isolate;
+  }
+
+  .erp-stack-image {
+    position: absolute;
+    inset: 5% 7%;
+    width: 86%;
+    height: 90%;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid rgb(255 255 255 / 15%);
+    border-radius: 12px;
+    background: #141414;
+    box-shadow: 0 16px 28px rgb(0 0 0 / 30%);
+    cursor: zoom-in;
+    transition: transform 450ms cubic-bezier(0.175, 0.885, 0, 1), box-shadow 450ms ease;
+  }
+
+  .erp-stack-image img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    transition: transform 500ms ease, filter 500ms ease;
+  }
+
+  .erp-stack-image-0 {
+    z-index: 1;
+    transform: translate3d(55px, -11px, -55px) rotateY(-13deg) rotateZ(4deg);
+  }
+
+  .erp-stack-image-1 {
+    z-index: 2;
+    transform: translate3d(-50px, 5px, -25px) rotateY(10deg) rotateZ(-3deg);
+  }
+
+  .erp-stack-image-2 {
+    z-index: 3;
+    transform: translate3d(0, 0, 0) rotateY(-4deg);
+  }
+
+  .erp-stack-image::before {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(0deg, transparent, transparent 30%, rgb(0 255 255 / 48%));
+    opacity: 0;
+    pointer-events: none;
+    transform: rotate(-45deg) translateY(-65%);
+  }
+
+  .erp-stack-image:is(:hover, :focus-visible) {
+    z-index: 4;
+    border-color: rgb(0 255 255 / 65%);
+    box-shadow: 0 0 20px rgb(0 255 255 / 50%);
+  }
+
+  .erp-stack-image:is(:hover, :focus-visible) img {
+    transform: scale(1.04);
+    filter: brightness(1.05);
+  }
+
+  .erp-stack-image:is(:hover, :focus-visible)::before {
+    animation: holographic-sweep 1.8s ease-in-out infinite;
+  }
+
+  .erp-lightbox {
+    position: fixed;
+    inset: 0;
+    box-sizing: border-box;
+    width: auto;
+    height: auto;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    background: transparent;
+  }
+
+  .erp-lightbox[open] {
+    display: grid;
+    place-items: center;
+    animation: lightbox-fade 420ms ease-out both;
+  }
+
+  .erp-lightbox::backdrop {
+    background: rgb(0 0 0 / 86%);
+    animation: backdrop-flash 420ms ease-out both;
+  }
+
+  .erp-lightbox-image {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: min(92vw, 1100px);
+    max-height: 90vh;
+    object-fit: contain;
+    object-position: center;
+    border: 1px solid rgb(255 255 255 / 18%);
+    border-radius: 10px;
+    box-shadow: 0 24px 90px rgb(0 0 0 / 60%);
+    animation: lightbox-flash 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+
+  @media (max-width: 480px) {
+    .erp-stack-image-0 {
+      transform: translate3d(30px, -11px, -55px) rotateY(-13deg) rotateZ(4deg);
+    }
+
+    .erp-stack-image-1 {
+      transform: translate3d(-25px, 5px, -25px) rotateY(10deg) rotateZ(-3deg);
+    }
+
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .erp-stack-image,
+    .erp-stack-image::before,
+    .erp-lightbox[open],
+    .erp-lightbox-image,
+    .erp-lightbox::backdrop {
+      animation-duration: 0.01ms;
+      transition-duration: 0.01ms;
+    }
+  }
+
+  @keyframes lightbox-flash {
+    from { opacity: 0; transform: scale(0.94); filter: brightness(2.2); }
+    to { opacity: 1; transform: scale(1); filter: brightness(1); }
+  }
+
+  @keyframes lightbox-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes backdrop-flash {
+    from { background: rgb(255 255 255 / 88%); }
+    to { background: rgb(0 0 0 / 86%); }
+  }
+
+  @keyframes holographic-sweep {
+    0% { opacity: 0; transform: rotate(-45deg) translateY(-65%); }
+    16%, 78% { opacity: 1; }
+    100% { opacity: 0; transform: rotate(-45deg) translateY(105%); }
+  }
+</style>
