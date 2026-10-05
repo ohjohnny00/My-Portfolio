@@ -27,25 +27,22 @@ const navItems: NavItem[] = [
 <div class="flex justify-center w-full">
   <nav
     id="main-nav"
-    class="fixed left-1/2 -translate-x-1/2 z-[100] bg-[var(--background)] border border-1 border-transparent backdrop-blur-xl transition-all duration-500 ease-in-out md:top-6 md:bottom-auto bottom-0 w-[80%]"
+    class="fixed left-1/2 -translate-x-1/2 z-[100] border border-transparent bg-[#0f0f0f]/80 backdrop-blur-xl transition-all duration-500 ease-in-out md:top-6 md:bottom-auto bottom-0 w-[min(92vw,680px)] rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.22)]"
   >
-    <div class="container mx-auto flex justify-center items-center p-3">
-      <ul
-        class="flex w-full justify-between md:space-x-6 md:justify-center md:gap-12 gap-6"
-      >
+    <div class="mx-auto flex items-center justify-center px-3 py-2.5 md:px-6">
+      <ul class="flex w-full items-center justify-between gap-3 md:justify-center md:gap-8">
         {
-          navItems.map((item) => (
+          navItems.map((item, index) => (
             <li class="flex-1 md:flex-none">
               <a
                 href={item.href}
-                class="flex flex-col items-center gap-1 text-[var(--white-icon)] transition-colors text-xs md:text-base relative group"
+                class={`relative flex items-center justify-center gap-2 text-[var(--white-icon)] transition-colors duration-300 text-xs md:text-base ${index === 0 ? "active" : ""}`}
               >
-                <div class="absolute -left-6 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full transition-all duration-300 scale-0 opacity-0 bg-[#A9FF5B] nav-indicator hidden md:block" />
-                <span class="md:hidden flex items-center justify-center w-6 h-6">
+                <span class="nav-indicator hidden md:inline-flex h-2.5 w-2.5 rounded-full bg-[var(--sec)] opacity-0 scale-0 transition-all duration-300" />
+                <span class="md:hidden flex items-center justify-center w-5 h-5">
                   <fragment set:html={item.icon} />
                 </span>
-                <span class="hidden md:inline-block">{item.label}</span>
-                <span class="md:hidden">{item.label}</span>
+                <span class="inline-block">{item.label}</span>
               </a>
             </li>
           ))
@@ -57,81 +54,94 @@ const navItems: NavItem[] = [
 <style>
   nav {
     transform: translateX(-50%);
-    background-color: var(--background);
+    width: min(92vw, 680px);
     transition:
+      width 0.35s ease,
       background-color 0.3s ease,
       border-radius 0.3s ease,
-      border-color 0.3s ease;
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
   }
 
   nav.scrolling {
-    background-color: var(--component-bg);
-    border-color: #ffffff10;
-    border-radius: 9999px;
+    width: min(82vw, 620px);
+    background-color: rgba(20, 20, 20, 0.9);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 34px rgba(0, 0, 0, 0.26);
   }
 
-  nav a.active .nav-indicator {
-    transform: translateY(-50%) scale(1);
-    opacity: 1;
+  nav a {
+    color: rgba(243, 243, 243, 0.72);
   }
 
   nav a.active {
-    color: white !important;
+    color: rgba(255, 255, 255, 1) !important;
+  }
+
+  nav a.active .nav-indicator {
+    display: inline-flex;
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  html {
+    scroll-behavior: smooth;
   }
 
   @media (max-width: 767px) {
     nav {
-      width: 100% !important;
-      transform: translateX(-50%);
-      bottom: 0;
+      width: min(96vw, 520px) !important;
+      bottom: 0.75rem;
       left: 50%;
-      position: fixed;
-      border-radius: 1rem 1rem 0 0;
-      border-color: #ffffff10;
+      border-radius: 9999px;
+      border-color: rgba(255, 255, 255, 0.08);
     }
 
     nav.scrolling {
-      border-radius: 1rem 1rem 0 0;
-      background-color: var(--component-bg);
+      background-color: rgba(20, 20, 20, 0.92);
     }
 
     body {
-      padding-bottom: 70px;
+      padding-bottom: 78px;
     }
   }
 </style>
 
 <script>
   const nav = document.getElementById("main-nav");
-  const maxScroll = 1000;
-  let rafId: number | null = null;
+  const navLinks = document.querySelectorAll("nav a[href^='#']");
+  let lastActiveId: string | null = null;
+  let navigationTarget: string | null = null;
+  let navigationFallback: number | null = null;
+
+  const setActiveLink = (id: string | null) => {
+    if (!id || id === lastActiveId) return;
+
+    lastActiveId = id;
+    navLinks.forEach((link) => link.classList.remove("active"));
+
+    const activeLink = document.querySelector(`nav a[href="#${id}"]`);
+    if (activeLink) {
+      activeLink.classList.add("active");
+    }
+  };
+
+  let scrollTick: number | null = null;
 
   function updateNav() {
     if (window.scrollY > 0) {
       nav?.classList.add("scrolling");
-
-      const scrollProgress = Math.min(window.scrollY / maxScroll, 1);
-      const easeProgress = 1 - Math.pow(1 - scrollProgress, 4);
-
-      const minWidth = 528;
-      const maxWidth = window.innerWidth * 0.8;
-      const currentWidth = maxWidth - (maxWidth - minWidth) * easeProgress;
-
-      if (window.innerWidth >= 768) {
-        nav?.style.setProperty("width", `${currentWidth}px`);
-      }
     } else {
       nav?.classList.remove("scrolling");
-      nav?.style.setProperty("width", "80%");
     }
-    rafId = null;
+    scrollTick = null;
   }
 
   window.addEventListener(
     "scroll",
     () => {
-      if (!rafId) {
-        rafId = requestAnimationFrame(updateNav);
+      if (!scrollTick) {
+        scrollTick = requestAnimationFrame(updateNav);
       }
     },
     { passive: true }
@@ -143,9 +153,23 @@ const navItems: NavItem[] = [
       const target = e.currentTarget as HTMLAnchorElement;
       const targetId = target.getAttribute("href")?.substring(1) || "";
       const targetElement = document.getElementById(targetId);
+
+      if (targetId) {
+        navigationTarget = targetId;
+        setActiveLink(targetId);
+        if (navigationFallback !== null) {
+          window.clearTimeout(navigationFallback);
+        }
+        navigationFallback = window.setTimeout(() => {
+          navigationTarget = null;
+          navigationFallback = null;
+        }, 1500);
+      }
+
       if (targetElement) {
         targetElement.scrollIntoView({
           behavior: "smooth",
+          block: "start",
         });
       }
     });
@@ -153,20 +177,25 @@ const navItems: NavItem[] = [
 
   document.addEventListener("DOMContentLoaded", () => {
     const sections = document.querySelectorAll("section[id]");
-    const navLinks = document.querySelectorAll("nav a[href^='#']");
-    const observerOptions = { threshold: 0.6 };
+    const observerOptions = { threshold: [0.3, 0.6, 0.9] };
+
+    if (sections.length > 0) {
+      setActiveLink("home");
+    }
 
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          navLinks.forEach((link) => link.classList.remove("active"));
-          const id = entry.target.getAttribute("id");
-          const activeLink = document.querySelector(`nav a[href="#${id}"]`);
-          if (activeLink) {
-            activeLink.classList.add("active");
-          }
+      if (navigationTarget) return;
+
+      const visibleEntries = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+      if (visibleEntries.length > 0) {
+        const topSectionId = visibleEntries[0].target.getAttribute("id");
+        if (topSectionId) {
+          setActiveLink(topSectionId);
         }
-      });
+      }
     };
 
     const observer = new IntersectionObserver(
@@ -174,6 +203,17 @@ const navItems: NavItem[] = [
       observerOptions
     );
     sections.forEach((section) => observer.observe(section));
+  });
+
+  window.addEventListener("scrollend", () => {
+    if (navigationTarget) {
+      setActiveLink(navigationTarget);
+      navigationTarget = null;
+      if (navigationFallback !== null) {
+        window.clearTimeout(navigationFallback);
+        navigationFallback = null;
+      }
+    }
   });
 </script>
 

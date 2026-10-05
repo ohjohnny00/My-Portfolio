@@ -13,11 +13,10 @@ const { title } = Astro.props;
     <title>{title} | Portfolio</title>
     <meta
       name="description"
-      content="Your Name - Software Developer building interactive and seamless digital experiences with cutting-edge frontend development."
+      content="Ilagan Ruben F is a BSIT student and frontend developer building responsive web applications and interactive digital experiences."
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="canonical" href="https://darkminimal.vercel.app/" />
 
     <link
       rel="preload"
@@ -29,21 +28,16 @@ const { title } = Astro.props;
 
     <meta
       property="og:title"
-      content="Your Name | Software Developer"
+      content="Ilagan Ruben F | Frontend Developer"
     />
     <meta
       property="og:description"
-      content="Portfolio of Your Name, Software Developer specializing in frontend and interactive experiences."
+      content="Portfolio of Ilagan Ruben F, a BSIT student building responsive web applications and interactive frontend experiences."
     />
-    <meta
-      property="og:image"
-      content="https://darkminimal.vercel.app/og.image.png"
-    />
-    <meta property="og:url" content="https://darkminimal.vercel.app" />
     <meta property="og:type" content="website" />
     <meta
       property="og:site_name"
-      content="Your Name Portfolio"
+      content="Ilagan Ruben F Portfolio"
     />
 
     <!-- Structured Data (JSON-LD) -->
@@ -51,21 +45,37 @@ const { title } = Astro.props;
       {
         "@context": "https://schema.org",
         "@type": "Person",
-        "name": "Your Name",
-        "alternateName": "Your Name",
-        "url": "https://darkminimal.vercel.app",
-        "image": "https://darkminimal.vercel.app/og.image.png",
+        "name": "Ilagan Ruben F",
         "sameAs": [
-          "https://github.com",
-          "https://linkedin.com"
+          "https://github.com/ohjohnny00",
+          "https://www.facebook.com/ohwbenny00"
         ],
-        "jobTitle": "Software Developer",
-        "description": "Software Developer building interactive and seamless digital experiences."
+        "jobTitle": "Frontend Developer",
+        "description": "BSIT student building responsive web applications and interactive frontend experiences."
       }
     </script>
   </head>
   <body class="bg-[--background] sm:px-28 lg:px-20 px-9">
     <slot />
+    <script>
+      const revealTargets = document.querySelectorAll(
+        ".scroll-animate, .scroll-reveal"
+      );
+
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            entry.target.classList.toggle("is-visible", entry.isIntersecting);
+          });
+        },
+        {
+          threshold: 0.01,
+          rootMargin: "-4% 0px -8% 0px",
+        }
+      );
+
+      revealTargets.forEach((target) => revealObserver.observe(target));
+    </script>
   </body>
 </html>
 
@@ -127,5 +137,38 @@ const { title } = Astro.props;
   * {
     scrollbar-width: thin;
     scrollbar-color: var(--line) var(--container);
+  }
+
+  .scroll-animate,
+  .scroll-reveal {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+    filter: blur(3px);
+    transition:
+      opacity 650ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 650ms cubic-bezier(0.22, 1, 0.36, 1),
+      filter 650ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .scroll-animate.is-visible,
+  .scroll-reveal.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    filter: blur(0);
+  }
+
+  .scroll-animate + .scroll-animate,
+  .scroll-reveal:nth-child(2) {
+    transition-delay: 90ms;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-animate,
+    .scroll-reveal {
+      opacity: 1;
+      transform: none;
+      filter: none;
+      transition: none;
+    }
   }
 </style>

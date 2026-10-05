@@ -13,17 +13,18 @@ const projects: Project[] = [
   
   {
     title: "RepReady",
-    image: "projects/830611764_1461873516085298_6993568021081799379_n.png",
+    image: "/projects/REP.jpg",
+    gallery: ["/projects/REP.jpg", "/projects/REP2.jpg", "/projects/REP3.jpg"],
     link: "https://github.com",
-    preview: "#!",
+    preview: "https://repready-gym.vercel.app/",
     status: "On Development",
   },
   {
     title: "Enterprise Resource Planning",
     image: "/projects/HRMS.png",
     gallery: ["/projects/HRMS.png", "/projects/FMS.png", "/projects/POS.png"],
-    link: "https://portforlio-1cqq.onrender.com/hrms/login",
-    preview: "#!",
+    link: "https://github.com",
+    preview: "https://portforlio-1cqq.onrender.com/hrms/login",
     status: "Deployed",
   },
 
@@ -35,15 +36,15 @@ const projects: Project[] = [
   class="py-12 border-t border-[#ffffff10] text-[var(--white)]"
 >
   <div class="max-w-5xl mx-auto">
-    <h2 class="text-lg text-[var(--sec)] mb-2 shiny-sec">My work</h2>
-    <h3 class="text-4xl md:text-5xl font-medium mb-8">Projects</h3>
+    <h2 class="scroll-animate text-lg text-[var(--sec)] mb-2 shiny-sec">My work</h2>
+    <h3 class="scroll-animate text-4xl md:text-5xl font-medium mb-8">Projects</h3>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
       {
         projects.map((project) => (
-          <div class="group project-card">
+          <div class="group project-card scroll-reveal rounded-3xl border border-[#ffffff10] bg-[#111111]/30 p-4 shadow-[0_12px_30px_rgba(0,0,0,0.18)] backdrop-blur-sm transition-all duration-300 hover:border-[#ffffff1c] hover:shadow-[0_18px_42px_rgba(0,0,0,0.26)]">
             {project.gallery ? (
-              <div class="erp-stack-stage mb-4">
+              <div class="erp-stack-stage mb-5">
                 {project.gallery.map((image, index) => (
                   <button
                     type="button"
@@ -72,10 +73,10 @@ const projects: Project[] = [
                 </div>
               </a>
             )}
-              <div class="flex items-center px-3">
+              <div class="flex items-center px-1 pt-1">
                 <div class="flex-grow">
-                  <h4 class="text-2xl font-semibold">{project.title}</h4>
-                  <span class="py-1 text-sm text-[var(--white-icon)]">
+                  <h4 class="text-2xl font-semibold tracking-[-0.03em] text-white/95">{project.title}</h4>
+                  <span class="inline-flex items-center rounded-full border border-[#ffffff14] bg-white/5 px-2.5 py-1 text-xs font-medium text-[var(--white-icon)] uppercase tracking-[0.12em]">
                     {project.status}
                   </span>
                 </div>
@@ -84,7 +85,7 @@ const projects: Project[] = [
                     target="_blank"
                     href={project.link}
                     aria-label="GitHub"
-                    class="size-14 flex justify-center items-center text-[var(--white-icon)] hover:text-white transition duration-300 ease-in-out border border-1 border-[var(--white-icon-tr)] p-3 rounded-xl bg-[#1414149c] hover:bg-[var(--white-icon-tr)]"
+                    class="size-11 flex justify-center items-center text-[var(--white-icon)] hover:text-white transition duration-300 ease-in-out border border-[#ffffff14] p-2.5 rounded-xl bg-[#1414149c] hover:bg-[#1b1b1b]"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -99,7 +100,7 @@ const projects: Project[] = [
                     target="_blank"
                     href={project.preview}
                     aria-label="Preview"
-                    class="size-14 flex justify-center items-center text-[var(--white-icon)] hover:text-white transition duration-300 ease-in-out border border-1 border-[var(--white-icon-tr)] p-3 rounded-xl bg-[#1414149c] hover:bg-[var(--white-icon-tr)]"
+                    class="size-11 flex justify-center items-center text-[var(--white-icon)] hover:text-white transition duration-300 ease-in-out border border-[#ffffff14] p-2.5 rounded-xl bg-[#1414149c] hover:bg-[#1b1b1b]"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -123,7 +124,7 @@ const projects: Project[] = [
       target="_blank"
       href="https://github.com/ohjohnny00"
       aria-label="GitHub"
-      class="w-full flex items-center justify-center gap-2 mt-9 text-[var(--white-icon)] hover:text-white transition duration-300 ease-in-out border border-[var(--white-icon-tr)] p-3 rounded-full bg-[#1414149c] hover:bg-[var(--white-icon-tr)] hover:scale-105"
+      class="scroll-reveal w-full flex items-center justify-center gap-2 mt-9 text-[var(--white-icon)] hover:text-white transition duration-300 ease-in-out border border-[var(--white-icon-tr)] p-3 rounded-full bg-[#1414149c] hover:bg-[var(--white-icon-tr)] hover:scale-105"
     >
       <span class="md:text-lg text-md">More projects on</span>
       <svg
@@ -171,32 +172,42 @@ const projects: Project[] = [
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && lightbox?.open) lightbox.close();
   });
+
 </script>
 
 <style>
   .erp-stack-stage {
     position: relative;
-    width: min(100%, 400px);
+    width: min(100%, 540px);
     margin-inline: auto;
     height: auto;
-    aspect-ratio: 1.4 / 1;
+    aspect-ratio: 1.48 / 1;
     perspective: 1100px;
     isolation: isolate;
+    filter: none;
+    transform: translateY(8px);
+    opacity: 0.96;
+  }
+
+  .is-visible .erp-stack-stage {
+    transform: translateY(0);
+    opacity: 1;
+    transition: transform 700ms ease, opacity 700ms ease;
   }
 
   .erp-stack-image {
     position: absolute;
-    inset: 5% 7%;
-    width: 86%;
-    height: 90%;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     padding: 0;
     overflow: hidden;
-    border: 1px solid rgb(255 255 255 / 15%);
-    border-radius: 12px;
-    background: #141414;
-    box-shadow: 0 16px 28px rgb(0 0 0 / 30%);
+    border: 1px solid rgb(255 255 255 / 8%);
+    border-radius: 18px;
+    background: rgba(17, 17, 17, 0.28);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
     cursor: zoom-in;
-    transition: transform 450ms cubic-bezier(0.175, 0.885, 0, 1), box-shadow 450ms ease;
+    transition: transform 450ms cubic-bezier(0.175, 0.885, 0, 1), box-shadow 450ms ease, border-color 300ms ease;
   }
 
   .erp-stack-image img {
@@ -206,22 +217,38 @@ const projects: Project[] = [
     height: 100%;
     object-fit: contain;
     object-position: center;
+    border-radius: 18px;
     transition: transform 500ms ease, filter 500ms ease;
   }
 
-  .erp-stack-image-0 {
+  .project-card:nth-child(1) .erp-stack-image-0 {
     z-index: 1;
-    transform: translate3d(55px, -11px, -55px) rotateY(-13deg) rotateZ(4deg);
+    transform: translate3d(52px, -10px, -50px) rotateY(-12deg) rotateZ(3.8deg) scale(0.98);
   }
 
-  .erp-stack-image-1 {
+  .project-card:nth-child(1) .erp-stack-image-1 {
     z-index: 2;
-    transform: translate3d(-50px, 5px, -25px) rotateY(10deg) rotateZ(-3deg);
+    transform: translate3d(-36px, 10px, -22px) rotateY(10deg) rotateZ(-2.5deg) scale(0.985);
   }
 
-  .erp-stack-image-2 {
+  .project-card:nth-child(1) .erp-stack-image-2 {
     z-index: 3;
-    transform: translate3d(0, 0, 0) rotateY(-4deg);
+    transform: translate3d(0, 0, 0) rotateY(-3deg) scale(1);
+  }
+
+  .project-card:nth-child(2) .erp-stack-image-0 {
+    z-index: 1;
+    transform: translate3d(52px, -10px, -50px) rotateY(-12deg) rotateZ(3.8deg) scale(0.98);
+  }
+
+  .project-card:nth-child(2) .erp-stack-image-1 {
+    z-index: 2;
+    transform: translate3d(-36px, 10px, -22px) rotateY(10deg) rotateZ(-2.5deg) scale(0.985);
+  }
+
+  .project-card:nth-child(2) .erp-stack-image-2 {
+    z-index: 3;
+    transform: translate3d(0, 0, 0) rotateY(-3deg) scale(1);
   }
 
   .erp-stack-image::before {
@@ -240,13 +267,14 @@ const projects: Project[] = [
 
   .erp-stack-image:is(:hover, :focus-visible) {
     z-index: 4;
-    border-color: rgb(0 255 255 / 65%);
-    box-shadow: 0 0 20px rgb(0 255 255 / 50%);
+    border-color: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 16px 28px rgba(0, 0, 0, 0.18);
+    transform: translate3d(0, -6px, 0) rotateY(0deg) rotateZ(0deg) scale(1.01);
   }
 
   .erp-stack-image:is(:hover, :focus-visible) img {
-    transform: scale(1.04);
-    filter: brightness(1.05);
+    transform: scale(1.02);
+    filter: brightness(1.03);
   }
 
   .erp-stack-image:is(:hover, :focus-visible)::before {
